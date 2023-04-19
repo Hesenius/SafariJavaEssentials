@@ -1,5 +1,15 @@
 package usingclasses;
 
+interface Texable {
+  // public and abstract by default
+  String getAsText();
+  // interfaces since Java 8 permit
+  // static methods, public and private (nothing in between)
+  // private instance methods
+  // public default methods -- fallback defintions of instance method
+  // public static final fields
+}
+
 public class Date {
   // label public "anywhere in the JVM" (except with Modules/JPMS)
   // label protected -- same package (as below) PLUS in subtypes (mostly)
@@ -111,7 +121,7 @@ public class Date {
 }
 
 // class based, single inheritance.
-class Holiday extends Date {
+class Holiday extends Date implements Texable {
   private String name;
   // if there are ZERO coded constructors, the compiler creates
   // a "default" constructor. For normal classes this is:
@@ -129,6 +139,15 @@ class Holiday extends Date {
   public String toString() {
     return "I'm a holiday called " + name
         + " on: " + super.toString();
+  }
+
+  public void sayHoliday() {
+    System.out.println("Holiday");
+  }
+
+  @Override
+  public String getAsText() {
+    return "I'm a holiday!";
   }
 }
 /*
@@ -159,6 +178,17 @@ class UseDate {
 
 //    Holiday nyd = new Holiday(1, 1, 2024, "New Year's Day");
     Date nyd = new Holiday(1, 1, 2024, "New Year's Day");
-    System.out.println(nyd);
+//    Holiday nyd = new Holiday(1, 1, 2024, "New Year's Day");
+    System.out.println(nyd.toString());
+
+//    if (nyd instanceof String) { // impossible, rejected by compiler
+    if (nyd instanceof Holiday h && h.getDay() == 1) {
+      System.out.println("It's a holiday!!");
+//      Runnable h = (Runnable)nyd;
+//      Holiday h = (Holiday)nyd;
+      h.sayHoliday();
+//    } else {
+//      h.say // h is not available here!
+    }
   }
 }
